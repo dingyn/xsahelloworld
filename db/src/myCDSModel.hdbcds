@@ -11,7 +11,7 @@ context myCDSModel {
             country    : String (10); 
     };
 
-
+ 
     entity businessPartner {
         key id           : BusinessKey;
             PartnerRole  : String (3); 
