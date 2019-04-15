@@ -1,0 +1,39 @@
+namespace xsahelloworld.db;
+
+context myCDSModel {
+    type BusinessKey : String (32); 
+    type SString: String (40); 
+    
+    type Address {
+            AddressId  : BusinessKey;
+            City       : SString;
+            PostalCode : BusinessKey;
+            country    : String (10); 
+    };
+
+
+    entity businessPartner {
+        key id           : BusinessKey;
+            PartnerRole  : String (3); 
+            toAddress    : Address; 
+    };
+
+    entity salesOrder {
+       id           : Integer;
+            toCustomer   : association[0..1] to businessPartner;
+       key     currencyCode : String(5);
+            grossAmount  : Integer;
+            document     : LargeBinary;
+    };
+
+    view salesOrderView as
+        select from salesOrder
+        {
+           id                           as id,
+           toCustomer.toAddress.country as customerCountry,
+           currencyCode,
+           grossAmount
+        }  with structured privilege check;
+        
+        
+};

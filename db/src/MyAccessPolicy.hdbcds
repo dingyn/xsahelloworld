@@ -1,0 +1,40 @@
+namespace xsahelloworld.db;
+
+using xsahelloworld.db::myCDSModel as ddl;
+
+accesspolicy MyAccessPolicy {
+    role salesOrderCountryAll {
+        // grant all countries
+        grant
+            select on ddl.salesOrderView;
+    };
+
+
+    /*   aspect aspCountry as select from ddl.address
+       {
+           country
+       }
+       where
+           $user in toEmployee.loginName; */
+
+
+    role salesOrderCountryUsa {
+        grant
+            select on ddl.salesOrderView
+        where
+            customerCountry = 'USA';
+    };
+    role salesOrderCountryOwnAndUsa {
+
+        /*   grant
+               select on ddl.salesOrderView
+           where
+                customerCountry = aspect :aspCountry; */
+
+        grant
+            select on ddl.salesOrderView
+        where
+            customerCountry in $env.user.country;
+        grant salesOrderCountryUsa;
+    };
+};

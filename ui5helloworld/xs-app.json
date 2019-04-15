@@ -1,0 +1,14 @@
+{
+  "welcomeFile": "/ui5helloworld/index.html",
+  "authenticationMethod": "route",
+  "logout": {
+    "logoutEndpoint": "/do/logout"
+  },
+  "routes": [
+    {
+      "source": "^/ui5helloworld/(.*)$",
+      "target": "$1",
+      "localDir": "webapp"
+    }
+  ]
+}

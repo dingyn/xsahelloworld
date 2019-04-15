@@ -1,0 +1,77 @@
+ID: xsahelloworld
+_schema-version: '2.1'
+version: 0.0.1
+
+modules:
+ - name: helloworld
+   type: nodejs
+   path: helloworld
+   provides:
+    - name: helloworld_api
+      properties:
+         url: ${default-url}
+
+ - name: xsahelloworld
+   type: nodejs
+   path: xsahelloworld
+   provides:
+    - name: xsahelloworld_api
+      properties:
+         url: ${default-url}
+
+
+ - name: ui5helloworld
+   type: html5
+   path: ui5helloworld
+   parameters:
+      disk-quota: 256M
+      memory: 256M
+   build-parameters:
+      builder: grunt
+   requires:
+    - name: uaa_xsahelloworld
+    - name: dest_xsahelloworld
+
+
+
+ 
+
+
+ - name: db
+   type: hdb
+   path: db
+   requires:
+    - name: hdi_db
+
+resources:
+ - name: uaa_xsahelloworld
+   parameters:
+      path: ./xs-security.json
+      service-plan: application
+      service: xsuaa
+   type: org.cloudfoundry.managed-service
+
+ - name: dest_xsahelloworld
+   parameters:
+      service-plan: lite
+      service: destination
+   type: org.cloudfoundry.managed-service
+
+
+ - name: hdi_myCDSModel
+   parameters:
+      config:
+         schema: myScheme
+   properties:
+      hdi-container-name: ${service-name}
+   type: com.sap.xs.hdi-container
+
+
+ - name: hdi_db
+   parameters:
+      config:
+         schema: mySchema
+   properties:
+      hdi-container-name_2: ${service-name}
+   type: com.sap.xs.hdi-container
+
